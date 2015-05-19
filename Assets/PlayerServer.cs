@@ -15,8 +15,8 @@ public class PlayerServer : Player {
 	
     private void UpdateInput(SocketIOEvent obj)
     {        
-        input = obj.data.ToVector2();
-        NetworkController.Log(input.ToString());
+        PlayerInput = obj.data.ToVector2();
+        NetworkController.Log(PlayerInput.ToString());
     }
 
     void Update()

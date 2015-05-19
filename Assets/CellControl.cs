@@ -44,17 +44,20 @@ public class CellControl : MonoBehaviour {
 		}
 		
 
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
+		if (Input.GetKeyDown(KeyCode.Space))		
 			Feed(Random.Range(1,Radius) * 2);
-			//jelly.Scale(Radius);
-		}
+		
 
 
-        var dir = player.GetInput.normalized;
+        var dir = player.PlayerInput.normalized;
+        Jelly.AddForce(dir * MS);
 
-		float dirInt = Mathf.Atan2(dir.y, dir.x) * _rad2Directions;
-		if (dirInt < 0) dirInt += NumberOfReferencePoints;
+       
+        return;
+
+        //Complex movement; Dont need on server
+        float dirInt = Mathf.Atan2(dir.y, dir.x) * _rad2Directions;
+        if (dirInt < 0) dirInt += NumberOfReferencePoints;
 
 		for (int i = -NumberOfAdjustedPoints; i < NumberOfAdjustedPoints + 1; i++)
 		{
