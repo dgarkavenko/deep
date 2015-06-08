@@ -37,7 +37,7 @@ public class BlobBehaviour : MonoBehaviour
 			jumpVector.x = UnityEngine.Random.Range(m_MinJumpVector.x, m_MaxJumpVector.x);
 			jumpVector.y = UnityEngine.Random.Range(m_MinJumpVector.y, m_MaxJumpVector.y);
 			jumpVector.Normalize();
-			m_JellySprite.AddForce(jumpVector * UnityEngine.Random.Range(m_MinJumpForce, m_MaxJumpForce));
+			m_JellySprite.CmdAddForce(jumpVector * UnityEngine.Random.Range(m_MinJumpForce, m_MaxJumpForce));
 			
 			m_BounceTimer = UnityEngine.Random.Range(m_MinBounceTime, m_MaxBounceTime);
 		}

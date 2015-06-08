@@ -1,6 +1,6 @@
 //#define TOOLKIT2D_SUPPORT_ENABLED
 using UnityEngine;
-
+using UnityEngine.Networking;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif 
@@ -197,7 +197,7 @@ public abstract class JellySprite : MonoBehaviour
 	}
 
 	// Central body point
-	ReferencePoint m_CentralPoint;
+	public ReferencePoint m_CentralPoint;
 
 	// List of reference point offset
 	Vector3[] m_ReferencePointOffsets;
@@ -374,11 +374,16 @@ public abstract class JellySprite : MonoBehaviour
 		m_Transform = this.transform;
 	}
 
+	private JellySpriteReferencePoint JSRP;
+
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start()
+	public void ManualStart(JellySpriteReferencePoint jsrp)
 	{
+
+		JSRP = jsrp;
+
 		if(m_FreeModeBodyPositions == null)
 		{
 			m_FreeModeBodyPositions = new List<Vector3>();
@@ -589,8 +594,12 @@ public abstract class JellySprite : MonoBehaviour
 		float radius = width * 0.5f;
         float sphereRadius = m_SphereRadius * m_Transform.localScale.x;
 
-        m_CentralPoint = AddReferencePoint(m_CentralBodyOffset, width * sphereRadius, m_LockRotation);
+        m_CentralPoint = new ReferencePoint(JSRP.GetComponent<Rigidbody2D>());
+		
 
+	
+
+		
 		// Add nodes in a circle around the centre
 		for(int loop = 0; loop < numPoints; loop++)
 		{
@@ -930,7 +939,7 @@ public abstract class JellySprite : MonoBehaviour
 			joint.connectedAnchor = point1.Body2D.transform.localPosition - point2.Body2D.transform.localPosition;
 			joint.distance = 0.0f;
 			
-			joint.collideConnected = m_CollideConnected;
+			joint.enableCollision = m_CollideConnected;
 			joint.frequency = m_Stiffness;
 			joint.dampingRatio = m_DampingRatio;
 		}
@@ -1792,7 +1801,7 @@ public abstract class JellySprite : MonoBehaviour
 	/// <summary>
 	/// Add a force to every reference point
 	/// </summary>
-	public void AddForce(Vector2 force)
+	public void CmdAddForce(Vector2 force)
 	{
 		if(m_ReferencePoints != null)
 		{
@@ -1812,12 +1821,14 @@ public abstract class JellySprite : MonoBehaviour
 		}
 	}
 
-	public void AddForce(Vector2 force, int index)
+		
+	public void CmdAddForce(Vector2 force, int index)
 	{
 		if (m_ReferencePoints != null)
 		{
 			m_ReferencePoints[index].Body2D.AddForce(force);
 		}
+
 	}
 
 	/// <summary>
